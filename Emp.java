@@ -64,18 +64,23 @@ class Emp{
         System.out.println("Enter Manager ID (or 0 if no manager): ");
         int managerId = scanner.nextInt();
         scanner.nextLine(); // Consume newline left-over
-        if(managerId != 0){
-            for(int i = 0; i < numEmployees; i++){
-                if(employees[i].getId() == managerId){
-                    this.manager = employees[i];
-                    return;
-                }
+        if(managerId == 0){
+            this.manager = null; // No manager assigned
+            return;
+        }
+        if(managerId == this.id){
+            System.out.println("An employee cannot be their own manager. Please try again.");
+            setManager(employees, numEmployees); // Recursively ask for a valid manager ID
+            return;
+        }
+        for(int i = 0; i < numEmployees; i++){
+            if(employees[i].getId() == managerId){
+                this.manager = employees[i];
+                return;
             }
         }
-        else{
-            System.out.println("Invalid Manager ID. Please try again.");
-            setManager(employees, numEmployees); // Recursively ask for a valid manager ID
-        }
+        System.out.println("Invalid Manager ID. Please try again.");
+        setManager(employees, numEmployees); // Recursively ask for a valid manager ID
     }
     Emp getManager(){
         return manager;
@@ -105,7 +110,7 @@ class Emp{
             System.out.println("Manager ID: " + emp.getManager().getId());
             System.out.println("Manager Name: " + emp.getManager().getName());
         } else {
-            System.out.println("Manager: None");
+            System.out.println("Manager: None (May be a top-level manager or CEO)");
         }
         System.out.println("Hire Date: " + emp.getHireDate());
         System.out.println("Job Title: " + emp.getJobTitle());
