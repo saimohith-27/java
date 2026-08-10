@@ -7,6 +7,7 @@ class Dept{
     void setDeptId(){
         System.out.println("Enter Department ID: ");
         this.deptId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
     }
     int getDeptId(){
         return deptId;

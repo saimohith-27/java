@@ -14,6 +14,7 @@ class Emp{
     void setId(){
         System.out.println("Enter Employee ID: ");
         this.id = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
     }
     int getId(){
         return id;
@@ -26,7 +27,7 @@ class Emp{
         return name;
     }
     void setDeptId(Dept departments[], int numDepts){
-        System.out.println("Enter Department ID: ");
+        System.out.println("Enter Department ID (Enter 0 to skip): ");
         int setDeptId = scanner.nextInt();
         for(int i = 0; i < numDepts; i++){
             if(departments[i].getDeptId() == setDeptId){
@@ -34,7 +35,12 @@ class Emp{
                 return;
             }
         }
+        if(setDeptId == 0){
+            this.deptId = 0;
+            return;
+        }
         System.out.println("Invalid Department ID. Please try again.");
+        setDeptId(departments, numDepts); // Recursively ask for a valid department ID
     }   
     int getDeptId(){
         return deptId;
@@ -49,6 +55,7 @@ class Emp{
     void setCommission(){
         System.out.println("Enter Employee Commission: ");
         this.commission = scanner.nextDouble(); 
+        scanner.nextLine(); // Consume newline left-over
     }
     double getCommission(){
         return commission;
@@ -56,13 +63,18 @@ class Emp{
     void setManager(Emp employees[], int numEmployees){
         System.out.println("Enter Manager ID (or 0 if no manager): ");
         int managerId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
         if(managerId != 0){
             for(int i = 0; i < numEmployees; i++){
                 if(employees[i].getId() == managerId){
                     this.manager = employees[i];
-                    break;
+                    return;
                 }
             }
+        }
+        else{
+            System.out.println("Invalid Manager ID. Please try again.");
+            setManager(employees, numEmployees); // Recursively ask for a valid manager ID
         }
     }
     Emp getManager(){
@@ -100,13 +112,11 @@ class Emp{
     }
     void createEmployee(Emp employees[], int numEmployees, Dept departments[], int numDepts){
         setId();
-        scanner.nextLine(); // Consume newline left-over
         setName();
         setDeptId(departments, numDepts);
         setSalary();
         setManager(employees, numEmployees); // Initially, no manager is assigned
         setCommission();
-        scanner.nextLine(); // Consume newline left-over
         setHireDate();
         setJobTitle();
     }
