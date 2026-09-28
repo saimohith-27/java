@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Configure Exam{% endblock %}
+{% block content %}
+<h3>Configure Examination</h3>
+<form method="post" class="row g-3">
+  <div class="col-md-6"><label class="form-label">Subject</label><select class="form-select" name="subject" id="subjectSel">{% for s in subjects %}<option>{{ s }}</option>{% endfor %}</select></div>
+  <div class="col-md-6"><label class="form-label">Custom Subject</label><input class="form-control" name="custom_subject" placeholder="Used only when Custom Subject selected"></div>
+  <div class="col-md-4"><label class="form-label">Difficulty</label><select class="form-select" name="difficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Mixed</option></select></div>
+  <div class="col-md-4"><label class="form-label">Number of Questions</label><select class="form-select" name="question_count"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div>
+  <div class="col-md-4"><label class="form-label">Time limit (minutes)</label><select class="form-select" name="time_limit"><option>5</option><option selected>10</option><option>15</option><option>30</option></select></div>
+  <div class="col-md-12">
+    <label class="form-label">Question Types</label>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="question_types" value="single_choice" checked><label class="form-check-label">Single Choice</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="question_types" value="multiple_choice" checked><label class="form-check-label">Multiple Choice</label></div>
+    <div class="form-check"><input class="form-check-input" type="checkbox" name="question_types" value="true_false" checked><label class="form-check-label">True/False</label></div>
+  </div>
+  <div class="col-md-12"><label class="form-label">Categories / Topics (comma separated)</label><input class="form-control" name="categories" placeholder="Variables, OOP, Functions"></div>
+  <div class="col-12"><button class="btn btn-primary">Generate Examination</button></div>
+</form>
+{% endblock %}

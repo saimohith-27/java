@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Result{% endblock %}
+{% block content %}
+<h3>Result Dashboard</h3>
+<div class="row g-3 mb-3">
+  <div class="col-md-8"><div class="card card-body"><p class="mb-1"><strong>Candidate:</strong> {{ candidate.name }}</p><p class="mb-1"><strong>Exam:</strong> {{ attempt.exam.title }}</p><p class="mb-1"><strong>Score:</strong> {{ attempt.score }} / {{ attempt.max_score }} ({{ attempt.percentage }}%)</p></div></div>
+  <div class="col-md-4"><div class="card card-body"><p class="mb-1">Correct: {{ status_counts.CORRECT }}</p><p class="mb-1">Incorrect: {{ status_counts.INCORRECT }}</p><p class="mb-1">Partial: {{ status_counts.PARTIALLY_CORRECT }}</p><p class="mb-1">Unanswered: {{ status_counts.UNANSWERED }}</p></div></div>
+</div>
+<div class="row g-3">
+  <div class="col-md-4"><canvas id="statusChart"></canvas></div>
+  <div class="col-md-4"><canvas id="categoryChart"></canvas></div>
+  <div class="col-md-4"><canvas id="timeChart"></canvas></div>
+</div>
+<div class="mt-4 card card-body">
+  <h5>Performance Insights</h5>
+  <p class="mb-1">Strongest area: {{ insights.strongest[0] }} — {{ insights.strongest[1] }}%</p>
+  <p class="mb-1">Needs improvement: {{ insights.weakest[0] }} — {{ insights.weakest[1] }}%</p>
+  <p class="mb-1">Average time/question: {{ insights.avg_time }} sec</p>
+  <p class="mb-1">Fastest: {{ insights.fastest[0] }} ({{ insights.fastest[1] }} sec)</p>
+  <p class="mb-1">Slowest: {{ insights.slowest[0] }} ({{ insights.slowest[1] }} sec)</p>
+</div>
+<a class="btn btn-outline-primary mt-3" href="{{ url_for('result.review', attempt_id=attempt.id) }}">Review Questions</a>
+<script>
+window.__RESULT_DATA__ = {
+  status: {{ status_counts|tojson }},
+  category: {{ insights.category_percent|tojson }},
+  timePoints: {{ insights.time_points|tojson }}
+}
+</script>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/charts.js') }}"></script>{% endblock %}

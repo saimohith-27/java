@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}History{% endblock %}
+{% block content %}
+<h3>Exam History</h3>
+{% if not attempts %}<p>No attempts yet. <a href="{{ url_for('main.candidate') }}">Start now</a>.</p>{% else %}
+<table class="table table-striped"><thead><tr><th>Date</th><th>Exam</th><th>Subject</th><th>Difficulty</th><th>Questions</th><th>Score</th><th>%</th><th></th></tr></thead><tbody>
+{% for a in attempts %}
+<tr><td>{{ a.submitted_at }}</td><td>{{ a.exam.title }}</td><td>{{ a.exam.subject }}</td><td>{{ a.exam.difficulty }}</td><td>{{ a.exam.question_count }}</td><td>{{ a.score }}/{{ a.max_score }}</td><td>{{ a.percentage }}</td><td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('result.view_result', attempt_id=a.id) }}">Open</a></td></tr>
+{% endfor %}
+</tbody></table>
+{% endif %}
+{% endblock %}

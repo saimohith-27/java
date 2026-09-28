@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Review{% endblock %}
+{% block content %}
+<h3>Question Review</h3>
+<div class="mb-3">
+  <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('result.view_result', attempt_id=attempt.id) }}">Back to Results</a>
+</div>
+<div class="accordion" id="reviewAcc">
+{% for a in answers %}
+  <div class="accordion-item">
+    <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#q{{ loop.index }}">{{ a.question.external_id }} — {{ a.status or 'UNANSWERED' }}</button></h2>
+    <div id="q{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#reviewAcc">
+      <div class="accordion-body">
+        <p><strong>Question:</strong> {{ a.question.text }}</p>
+        <p><strong>Your answer:</strong> {{ a.selected_answer_json }}</p>
+        <p><strong>Correct answer:</strong> {{ a.question.correct_answer_json }}</p>
+        <p><strong>Marks:</strong> {{ a.marks_awarded or 0 }} / {{ a.question.marks }}</p>
+        <p><strong>Explanation:</strong> {{ a.question.explanation }}</p>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

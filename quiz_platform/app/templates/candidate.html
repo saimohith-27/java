@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Candidate{% endblock %}
+{% block content %}
+<h3>Candidate Details</h3>
+<form method="post" class="row g-3">
+  <div class="col-md-6"><label class="form-label">Candidate Name</label><input required maxlength="120" class="form-control" name="name"></div>
+  <div class="col-md-6"><label class="form-label">Candidate ID</label><input required maxlength="64" class="form-control" name="candidate_id"></div>
+  <div class="col-md-4"><label class="form-label">Branch</label><input class="form-control" name="branch"></div>
+  <div class="col-md-4"><label class="form-label">Year</label><input class="form-control" name="year"></div>
+  <div class="col-md-4"><label class="form-label">Section</label><input class="form-control" name="section"></div>
+  <div class="col-12"><button class="btn btn-primary">Continue</button></div>
+</form>
+{% endblock %}
