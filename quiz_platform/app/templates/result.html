@@ -19,7 +19,7 @@
   <p class="mb-1">Fastest: {{ insights.fastest[0] }} ({{ insights.fastest[1] }} sec)</p>
   <p class="mb-1">Slowest: {{ insights.slowest[0] }} ({{ insights.slowest[1] }} sec)</p>
 </div>
-<a class="btn btn-outline-primary mt-3" href="{{ url_for('result.review', attempt_id=attempt.id) }}">Review Questions</a>
+<a class="btn btn-outline-primary mt-3" href="{{ url_for('result.review') }}">Review Questions</a>
 <script>
 window.__RESULT_DATA__ = {
   status: {{ status_counts|tojson }},

@@ -1,7 +1,6 @@
-from flask import Blueprint, redirect, render_template, request, session, url_for, flash
+from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 
-from .. import db
-from ..models import Candidate
+from ..services.roll_number_service import parse_roll_number
 
 main_bp = Blueprint("main", __name__)
 
@@ -13,38 +12,39 @@ def home():
 
 @main_bp.route("/candidate", methods=["GET", "POST"])
 def candidate():
+    decoded_info = None
+    form_data = {}
+
     if request.method == "POST":
+        action = request.form.get("action", "decode")
         name = request.form.get("name", "").strip()
-        candidate_code = request.form.get("candidate_id", "").strip()
-        branch = request.form.get("branch", "").strip()
-        year = request.form.get("year", "").strip()
-        section = request.form.get("section", "").strip()
+        roll_number = request.form.get("roll_number", "").strip().upper()
+        section = request.form.get("section", "").strip().upper()
+        form_data = {"name": name, "roll_number": roll_number, "section": section}
 
-        if not name or not candidate_code:
-            flash("Candidate name and ID are required.", "danger")
-            return render_template("candidate.html")
-        if len(name) > 120 or len(candidate_code) > 64:
-            flash("Name or ID too long.", "danger")
-            return render_template("candidate.html")
+        if not name or not roll_number or not section:
+            flash("Name, roll number, and section are required.", "danger")
+            return render_template("candidate.html", decoded_info=decoded_info, form_data=form_data)
 
-        candidate = Candidate.query.filter_by(candidate_code=candidate_code).first()
-        if not candidate:
-            candidate = Candidate(
-                name=name,
-                candidate_code=candidate_code,
-                branch=branch or "N/A",
-                year=year or "N/A",
-                section=section or "N/A",
-            )
-            db.session.add(candidate)
-            db.session.commit()
+        if len(name) > 120 or len(roll_number) > 20 or len(section) > 8:
+            flash("One or more fields exceed allowed length.", "danger")
+            return render_template("candidate.html", decoded_info=decoded_info, form_data=form_data)
 
-        session["candidate_id"] = candidate.id
-        return redirect(url_for("exam.configure_exam"))
+        parsed = parse_roll_number(roll_number)
+        decoded_info = parsed.to_dict()
+        if not parsed.valid:
+            flash(parsed.error, "danger")
+            return render_template("candidate.html", decoded_info=None, form_data=form_data)
 
-    return render_template("candidate.html")
+        if action == "confirm":
+            session["candidate"] = {
+                "name": name,
+                "roll_number": roll_number,
+                "section": section,
+                "decoded": decoded_info,
+            }
+            session.pop("active_attempt_id", None)
+            session.pop("last_result", None)
+            return redirect(url_for("exam.configure_exam"))
 
-
-@main_bp.get("/history")
-def history_redirect():
-    return redirect(url_for("result.history"))
+    return render_template("candidate.html", decoded_info=decoded_info, form_data=form_data)

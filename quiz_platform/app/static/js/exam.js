@@ -10,12 +10,17 @@ function renderGrid() {
   grid.innerHTML = '';
   data.answers.forEach((a, i) => {
     const b = document.createElement('button');
-    b.className = 'btn btn-sm m-1 ' + (i === idx ? 'btn-primary' : a.marked ? 'btn-warning' : a.selected ? 'btn-success' : a.visited ? 'btn-secondary' : 'btn-light border');
+    b.className = 'btn btn-sm m-1 ' + (i === idx ? 'btn-primary' : a.marked ? 'btn-warning' : hasAnswer(a) ? 'btn-success' : a.visited ? 'btn-secondary' : 'btn-light border');
     b.innerText = i + 1;
-    b.title = `${a.external_id}`;
+    b.title = `${a.question_id}`;
+    b.setAttribute('aria-label', `Question ${i+1} ${i===idx?'current':a.marked?'marked for review':hasAnswer(a)?'answered':a.visited?'visited unanswered':'unvisited'}`);
     b.onclick = () => { saveAndGo(i); };
     grid.appendChild(b);
   });
+}
+
+function hasAnswer(a) {
+  return Array.isArray(a.selected) ? a.selected.length > 0 : a.selected !== null && a.selected !== undefined && a.selected !== '';
 }
 
 function renderQuestion() {
@@ -73,19 +78,20 @@ function saveAndGo(nextIdx) {
 
 function updateTimer() {
   const el = document.getElementById('timer');
-  const m = Math.floor(remaining / 60).toString().padStart(2, '0');
-  const s = (remaining % 60).toString().padStart(2, '0');
+  const m = Math.floor(Math.max(0, remaining) / 60).toString().padStart(2, '0');
+  const s = (Math.max(0, remaining) % 60).toString().padStart(2, '0');
   el.textContent = `${m}:${s}`;
   const warn = document.getElementById('warn');
   warn.textContent = remaining <= 30 ? 'Final 30 seconds' : remaining <= 60 ? '1 minute remaining' : remaining <= 300 ? '5 minutes remaining' : '';
   if (remaining <= 0) {
     fetch('/autosubmit', {method:'POST'}).then(r=>r.json()).then(j=>location.href=j.redirect);
+    return;
   }
   remaining -= 1;
 }
 
 function updateSummary() {
-  const answered = data.answers.filter(a => (Array.isArray(a.selected) ? a.selected.length : a.selected !== null && a.selected !== undefined && a.selected !== '')).length;
+  const answered = data.answers.filter(a => hasAnswer(a)).length;
   const marked = data.answers.filter(a => a.marked).length;
   const unanswered = data.answers.length - answered;
   document.getElementById('summary').textContent = `Answered: ${answered}, Unanswered: ${unanswered}, Marked for review: ${marked}`;

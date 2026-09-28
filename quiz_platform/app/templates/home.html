@@ -5,10 +5,9 @@
   <h1 class="display-6">AI Quiz & Assessment Platform</h1>
   <p class="lead">Professional AI-assisted CBT-style quiz and examination system.</p>
   <a class="btn btn-primary me-2" href="{{ url_for('main.candidate') }}">Start Examination</a>
-  <a class="btn btn-outline-secondary" href="{{ url_for('result.history') }}">Exam History</a>
 </div>
 <div class="row g-4">
-  <div class="col-md-6"><h5>How It Works</h5><ol><li>Enter candidate details</li><li>Configure exam</li><li>Generate AI questions</li><li>Take timed exam</li><li>Review analytics</li></ol></div>
-  <div class="col-md-6"><h5>Features</h5><ul><li>Gemini question generation</li><li>Pydantic validation</li><li>Partial scoring</li><li>Chart-based analytics</li><li>Attempt history</li></ul></div>
+  <div class="col-md-6"><h5>How It Works</h5><ol><li>Enter candidate details</li><li>Decode and confirm roll number details</li><li>Configure exam</li><li>Generate AI questions</li><li>Take timed exam and review analytics</li></ol></div>
+  <div class="col-md-6"><h5>Features</h5><ul><li>Gemini question generation</li><li>Pydantic validation</li><li>Session-based active attempt</li><li>Partial scoring</li><li>Chart-based analytics</li></ul></div>
 </div>
 {% endblock %}

@@ -3,11 +3,30 @@
 {% block content %}
 <h3>Candidate Details</h3>
 <form method="post" class="row g-3">
-  <div class="col-md-6"><label class="form-label">Candidate Name</label><input required maxlength="120" class="form-control" name="name"></div>
-  <div class="col-md-6"><label class="form-label">Candidate ID</label><input required maxlength="64" class="form-control" name="candidate_id"></div>
-  <div class="col-md-4"><label class="form-label">Branch</label><input class="form-control" name="branch"></div>
-  <div class="col-md-4"><label class="form-label">Year</label><input class="form-control" name="year"></div>
-  <div class="col-md-4"><label class="form-label">Section</label><input class="form-control" name="section"></div>
-  <div class="col-12"><button class="btn btn-primary">Continue</button></div>
+  <input type="hidden" name="action" value="decode">
+  <div class="col-md-6"><label class="form-label">Full Name</label><input required maxlength="120" class="form-control" name="name" value="{{ form_data.name if form_data else '' }}"></div>
+  <div class="col-md-6"><label class="form-label">Roll Number</label><input required maxlength="20" class="form-control" name="roll_number" placeholder="e.g., 25KB1A05G4" value="{{ form_data.roll_number if form_data else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">Section</label><input required maxlength="8" class="form-control" name="section" value="{{ form_data.section if form_data else '' }}"></div>
+  <div class="col-12"><button class="btn btn-outline-primary">Validate Roll Number</button></div>
 </form>
+
+{% if decoded_info and decoded_info.valid %}
+<div class="card mt-4">
+  <div class="card-body">
+    <h5>Roll Number Details</h5>
+    <p class="mb-1"><strong>Admission Year:</strong> {{ decoded_info.admission_year }}</p>
+    <p class="mb-1"><strong>College:</strong> {{ decoded_info.college }}</p>
+    <p class="mb-1"><strong>Entry Type:</strong> {{ decoded_info.entry_type }}</p>
+    <p class="mb-1"><strong>Branch:</strong> {{ decoded_info.branch }}</p>
+    <p class="mb-3"><strong>Student Identifier:</strong> {{ decoded_info.student_identifier }}</p>
+    <form method="post" class="d-inline">
+      <input type="hidden" name="action" value="confirm">
+      <input type="hidden" name="name" value="{{ form_data.name }}">
+      <input type="hidden" name="roll_number" value="{{ form_data.roll_number }}">
+      <input type="hidden" name="section" value="{{ form_data.section }}">
+      <button class="btn btn-success">Continue to Exam Configuration</button>
+    </form>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

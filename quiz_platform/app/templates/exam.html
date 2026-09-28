@@ -2,7 +2,7 @@
 {% block title %}Exam{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <div><h4 class="mb-0">{{ attempt.exam.title }}</h4><small>{{ candidate.name }}</small></div>
+  <div><h4 class="mb-0">{{ exam.title }}</h4><small>{{ candidate.name }}</small></div>
   <div class="text-end"><div id="timer" class="fs-4 fw-bold"></div><small id="warn" class="text-danger"></small></div>
 </div>
 <div class="row">
@@ -11,9 +11,10 @@
     <div class="question-grid" id="questionGrid"></div>
     <ul class="small mt-3 list-unstyled">
       <li><span class="badge bg-success">Answered</span></li>
-      <li><span class="badge bg-secondary">Unanswered</span></li>
-      <li><span class="badge bg-warning text-dark">Review</span></li>
+      <li><span class="badge bg-secondary">Visited/Unanswered</span></li>
+      <li><span class="badge bg-warning text-dark">Marked for Review</span></li>
       <li><span class="badge bg-primary">Current</span></li>
+      <li><span class="badge bg-light border text-dark">Unvisited</span></li>
     </ul>
   </div>
   <div class="col-lg-9">
@@ -38,15 +39,13 @@ window.__EXAM_DATA__ = {
   answers: [
     {% for a in answers %}
     {
-      answerId: {{ a.id }},
-      question_id: {{ a.question.id }},
-      external_id: {{ a.question.external_id|tojson }},
-      text: {{ a.question.text|tojson }},
-      type: {{ a.question.qtype|tojson }},
-      options: {{ a.question.options_json|tojson }},
-      selected: {{ a.selected_answer_json|tojson }},
-      marked: {{ 'true' if a.is_marked_review else 'false' }},
-      visited: {{ 'true' if a.is_visited else 'false' }},
+      question_id: {{ a.question.id|tojson }},
+      text: {{ a.question.question|tojson }},
+      type: {{ a.question.type|tojson }},
+      options: {{ a.question.options|tojson }},
+      selected: {{ a.selected_answer|tojson }},
+      marked: {{ a.is_marked_review|tojson }},
+      visited: {{ a.is_visited|tojson }},
       category: {{ a.question.category|tojson }}
     }{% if not loop.last %},{% endif %}
     {% endfor %}
