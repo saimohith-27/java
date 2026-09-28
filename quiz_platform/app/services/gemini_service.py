@@ -6,18 +6,74 @@ from flask import current_app
 from ..schemas.question_schema import validate_exam_payload
 
 PROMPT_TEMPLATE = """
-Generate a strict JSON object only, with fields: title, subject, difficulty, questions.
-Constraints:
-- subject: {subject}
-- difficulty: {difficulty}
-- number_of_questions: {count}
-- question_types_allowed: {types}
-- categories/topics: {categories}
-- Each question fields: id,type,question,options,correct_answer or correct_answers,explanation,category,difficulty,marks,negative_marks.
-- Use type one of: single_choice,multiple_choice,true_false.
-- Do not include markdown fences.
-""".strip()
+You are an expert examination question setter.
 
+Generate a high-quality examination paper for the requested subject.
+
+Return ONLY valid JSON. Do not use Markdown fences.
+Do not add explanations outside the JSON object.
+
+Exam requirements:
+- Subject: {subject}
+- Difficulty: {difficulty}
+- Number of questions: {count}
+- Allowed question types: {types}
+- Requested categories/topics: {categories}
+
+The JSON object MUST contain:
+- title
+- subject
+- difficulty
+- questions
+
+Every question MUST contain:
+- id
+- type
+- question
+- options
+- correct_answer OR correct_answers
+- explanation
+- category
+- difficulty
+- marks
+- negative_marks
+
+Question type rules:
+
+1. single_choice
+- Exactly one correct answer.
+- Provide at least 4 meaningful options.
+- correct_answer must exactly match one option.
+
+2. multiple_choice
+- At least 4 meaningful options.
+- At least 2 correct answers.
+- At least 1 incorrect answer.
+- correct_answers must contain the exact option strings.
+
+3. true_false
+- The question must be a meaningful factual statement.
+- correct_answer must be a boolean: true or false.
+- options should be ["True", "False"].
+
+Quality requirements:
+- Questions must be genuinely related to the requested subject and category.
+- Do not create generic placeholder questions.
+- Do not use "Option A", "Option B", etc. as the actual answer text.
+- Do not use questions such as "subject question 1".
+- Do not use "General" unless General was explicitly requested.
+- Every option must be meaningful and plausible.
+- Avoid ambiguous questions.
+- Avoid duplicate questions.
+- Ensure the specified difficulty is respected.
+- Provide a concise explanation for every question.
+- Ensure every correct answer is actually correct.
+- Use realistic examination-style questions.
+
+For programming subjects, include actual code/output/predict-the-result questions where appropriate.
+
+Return exactly {count} questions.
+""".strip()
 
 class GeminiGenerationError(Exception):
     pass
