@@ -19,7 +19,7 @@ ENTRY_TYPE_CODES = {
     "5": "Lateral Entry",
 }
 
-ROLL_PATTERN = re.compile(r"^(\d{2})([A-Za-z]{2})([15])([A-Za-z]?\d{2})([A-Za-z]\d+)$")
+ROLL_PATTERN = re.compile(r"^(\d{2})([A-Za-z]{2})([A-Za-z0-9])([A-Za-z]?\d{2})([A-Za-z]\d+)$")
 
 
 @dataclass
