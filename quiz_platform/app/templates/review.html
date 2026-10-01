@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Review{% endblock %}
 {% block content %}
-<h3>Question Review</h3>
+<h3 class="mb-3">Question Review</h3>
 <div class="mb-3 d-flex flex-wrap gap-2">
   <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('result.view_result') }}">Back to Results</a>
   <a class="btn btn-sm btn-outline-dark" href="{{ url_for('result.set_review_filter', status='ALL') }}">All</a>
@@ -11,10 +11,10 @@
   <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('result.set_review_filter', status='UNANSWERED') }}">Unanswered</a>
   <span class="ms-2 align-self-center">Filter: <strong>{{ current_filter }}</strong></span>
 </div>
-<div class="accordion" id="reviewAcc">
+<div class="accordion review-accordion" id="reviewAcc">
 {% for a in answers %}
   <div class="accordion-item">
-    <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#q{{ loop.index }}">{{ a.question.id }} — {{ a.status or 'UNANSWERED' }}</button></h2>
+    <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold" data-bs-toggle="collapse" data-bs-target="#q{{ loop.index }}">{{ a.question.id }} — {{ a.status or 'UNANSWERED' }}</button></h2>
     <div id="q{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#reviewAcc">
       <div class="accordion-body">
         <p><strong>Question:</strong> {{ a.question.question }}</p>

@@ -2,12 +2,14 @@
 {% block title %}Exam{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <div><h4 class="mb-0">{{ exam.title }}</h4><small>{{ candidate.name }}</small></div>
-  <div class="text-end"><div id="timer" class="fs-4 fw-bold"></div><small id="warn" class="text-danger"></small></div>
+  <div><h4 class="mb-0">{{ exam.title }}</h4><small class="text-muted">{{ candidate.name }}</small></div>
+  <div class="text-end"><div id="timer" class="fs-4 fw-bold timer-pill"></div><small id="warn" class="text-danger"></small></div>
 </div>
 <div class="row">
   <div class="col-lg-3">
-    <h6>Questions</h6>
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body">
+        <h6>Questions</h6>
     <div class="question-grid" id="questionGrid"></div>
     <ul class="small mt-3 list-unstyled">
       <li><span class="badge bg-success">Answered</span></li>
@@ -16,6 +18,8 @@
       <li><span class="badge bg-primary">Current</span></li>
       <li><span class="badge bg-light border text-dark">Unvisited</span></li>
     </ul>
+      </div>
+    </div>
   </div>
   <div class="col-lg-9">
     <div id="examPanel"></div>

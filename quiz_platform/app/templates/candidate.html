@@ -1,17 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Candidate{% endblock %}
 {% block content %}
-<h3>Candidate Details</h3>
-<form method="post" class="row g-3">
-  <input type="hidden" name="action" value="decode">
-  <div class="col-md-6"><label class="form-label">Full Name</label><input required maxlength="120" class="form-control" name="name" value="{{ form_data.name if form_data else '' }}"></div>
-  <div class="col-md-6"><label class="form-label">Roll Number</label><input required maxlength="20" class="form-control" name="roll_number" placeholder="e.g., 25KB1A05G4" value="{{ form_data.roll_number if form_data else '' }}"></div>
-  <div class="col-md-4"><label class="form-label">Section</label><input required maxlength="8" class="form-control" name="section" value="{{ form_data.section if form_data else '' }}"></div>
-  <div class="col-12"><button class="btn btn-outline-primary">Validate Roll Number</button></div>
-</form>
+<div class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <h3 class="mb-4">Candidate Details</h3>
+    <form method="post" class="row g-3">
+      <input type="hidden" name="action" value="decode">
+      <div class="col-md-6"><label class="form-label">Full Name</label><input required maxlength="120" class="form-control form-control-lg" name="name" value="{{ form_data.name if form_data else '' }}"></div>
+      <div class="col-md-6"><label class="form-label">Roll Number</label><input required maxlength="20" class="form-control form-control-lg" name="roll_number" placeholder="e.g., 25KB1A05G4" value="{{ form_data.roll_number if form_data else '' }}"></div>
+      <div class="col-md-4"><label class="form-label">Section</label><input required maxlength="8" class="form-control form-control-lg" name="section" value="{{ form_data.section if form_data else '' }}"></div>
+      <div class="col-12"><button class="btn btn-primary">Validate Roll Number</button></div>
+    </form>
+  </div>
+</div>
 
 {% if decoded_info and decoded_info.valid %}
-<div class="card mt-4">
+<div class="card mt-4 shadow-sm border-0">
   <div class="card-body">
     <h5>Roll Number Details</h5>
     <p class="mb-1"><strong>Admission Year:</strong> {{ decoded_info.admission_year }}</p>

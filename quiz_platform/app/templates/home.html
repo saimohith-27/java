@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<div class="p-5 mb-4 bg-light rounded-3">
-  <h1 class="display-6">AI Quiz & Assessment Platform</h1>
-  <p class="lead">Professional AI-assisted CBT-style quiz and examination system.</p>
-  <a class="btn btn-primary me-2" href="{{ url_for('main.candidate') }}">Start Examination</a>
+<div class="hero-card p-5 mb-4 rounded-4">
+  <h1 class="display-6 fw-semibold">AI Quiz & Assessment Platform</h1>
+  <p class="lead mb-4">Professional AI-assisted CBT-style quiz and examination system.</p>
+  <a class="btn btn-primary btn-lg px-4" href="{{ url_for('main.candidate') }}">Start Examination</a>
 </div>
 <div class="row g-4">
-  <div class="col-md-6"><h5>How It Works</h5><ol><li>Enter candidate details</li><li>Decode and confirm roll number details</li><li>Configure exam</li><li>Generate AI questions</li><li>Take timed exam and review analytics</li></ol></div>
-  <div class="col-md-6"><h5>Features</h5><ul><li>Gemini question generation</li><li>Pydantic validation</li><li>Session-based active attempt</li><li>Partial scoring</li><li>Chart-based analytics</li></ul></div>
+  <div class="col-md-6">
+    <div class="card card-body h-100 shadow-sm border-0">
+      <h5 class="fw-semibold">How It Works</h5>
+      <ol class="mb-0"><li>Enter candidate details</li><li>Decode and confirm roll number details</li><li>Configure exam</li><li>Generate AI questions</li><li>Take timed exam and review analytics</li></ol>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card card-body h-100 shadow-sm border-0">
+      <h5 class="fw-semibold">Features</h5>
+      <ul class="mb-0"><li>Gemini question generation</li><li>Pydantic validation</li><li>Session-based active attempt</li><li>Partial scoring</li><li>Chart-based analytics</li></ul>
+    </div>
+  </div>
 </div>
 {% endblock %}
