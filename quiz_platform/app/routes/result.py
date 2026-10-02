@@ -5,7 +5,6 @@ from ..services.state_store import get_attempt
 
 result_bp = Blueprint("result", __name__)
 
-
 @result_bp.get("/result")
 def view_result():
     attempt = _get_submitted_attempt()
@@ -43,7 +42,12 @@ def view_result():
 
     return render_template(
         "result.html",
-        attempt={"exam": attempt["exam"], "score": result.get("score", 0), "max_score": result.get("max_score", 0), "percentage": result.get("percentage", 0)},
+        attempt={
+            "exam": attempt["exam"],
+            "score": result.get("score", 0),
+            "max_score": result.get("max_score", 0),
+            "percentage": result.get("percentage", 0),
+        },
         candidate=attempt["candidate"],
         answers=answers,
         status_counts={
@@ -52,9 +56,10 @@ def view_result():
             "PARTIALLY_CORRECT": result.get("status_counts", {}).get("PARTIALLY_CORRECT", 0),
             "UNANSWERED": result.get("status_counts", {}).get("UNANSWERED", 0),
         },
+        category_data=insights["category_percent"],
+        time_points=insights["time_points"],
         insights=insights,
     )
-
 
 @result_bp.get("/review")
 def review():
